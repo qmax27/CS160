@@ -4,7 +4,7 @@
 # In[51]:
 
 
-class Node:
+class Node:             # complexity of this class is 1 because each of these methods will run one time when called
     def __init__(self, initdata):
         self.data = initdata
         self.next = None
@@ -22,20 +22,20 @@ class Node:
         self.next = newnext
 
 
-class UnorderedList:
+class UnorderedList:                # O(N) complexity
 
-    def __init__(self):
+    def __init__(self):                 #O(1)
         self.head = None
 
-    def isEmpty(self):
+    def isEmpty(self):                  #O(1)
         return self.head == None
 
     def add(self, item):
-        temp = Node(item)
+        temp = Node(item)               #O(1)
         temp.setNext(self.head)
         self.head = temp
 
-    def size(self):
+    def size(self):             #O(N) due length dependent to while loop
         current = self.head
         count = 0
         while current != None:
@@ -44,7 +44,7 @@ class UnorderedList:
 
         return count
 
-    def search(self, item):
+    def search(self, item):      #O(N) complexity due to length dependent while loop
         current = self.head
         found = False
         while current != None and not found:
@@ -52,26 +52,39 @@ class UnorderedList:
                 found = True
             else:
                 current = current.getNext()
-
         return found
 
-    def remove(self, item):
+    def remove(self, item):      #O(N) complexity due to length dependent while loop
         current = self.head
         previous = None
         found = False
-        if not self.isEmpty() or current != None:  # in order to make this a stack we would have to make it so the item is only removed if it equals the head so we would have the boolean statement check if the head equals the item removed
+        if not self.isEmpty() or current != None:
             while not found:
-                if current.getData() == item:  # to make unordered list queue
+                if current.getData() == item:
                     found = True
                 else:
                     previous = current
                     current = current.getNext()
-            if previous == None:  # What happens when the list is empty in this function?
+            if previous == None:
                 self.head = current.getNext()
             else:
                 previous.setNext(current.getNext())
         else:
             return "List is empty"  #
+
+    def prntlist(self):
+        n = 0
+        ln = self.size()
+        c_val = self.head
+        final_list = []
+        if not self.isEmpty():
+            while n < ln:
+                final_list += [c_val.getData()]
+                c_val = c_val.getNext()
+                n += 1
+            print(final_list)
+        else:
+            print('list is empty')
 
 
 class BinHeap:
@@ -156,6 +169,8 @@ class BinHeap:
             self.percDown(d_p[1])
         else:
             print('Patient not currently awaiting organ')
+
+
 
 
 def addPatient(unreceived, received, dead):

@@ -132,7 +132,7 @@ class BinHeap:
 
     def binarySearchHelper(self, item, start, end):
         if abs(end - start) <= 1:
-            return False
+            return False, 'N/A'
         midpoint = (start + end) // 2
         if self.heapList[midpoint] == item:
             return True, midpoint
@@ -155,13 +155,16 @@ class BinHeap:
 
 
 
+unreceived = UnorderedList()
+received = UnorderedList()
 organslist = BinHeap()
 organslist.insert(3)
 organslist.insert(2)
 organslist.insert(7)
 organslist.insert(8)
 organslist.insert(9)
-organslist.transfer(7)
+organslist.transfer(7, unreceived)
+organslist.transfer(9, unreceived)
 
 
 
