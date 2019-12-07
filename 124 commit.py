@@ -82,7 +82,7 @@ class UnorderedList:                # O(N) complexity
                 final_list += [c_val.getData()]
                 c_val = c_val.getNext()
                 n += 1
-            print(final_list)
+            return final_list
         else:
             print('list is empty')
 
@@ -151,7 +151,7 @@ class BinHeap:
 
     def binarySearchHelper(self, item, start, end):
         if abs(end - start) <= 1:
-            return False
+            return False, 'N/a'
         midpoint = (start + end) // 2
         if self.heapList[midpoint] == item:
             return True, midpoint

@@ -4,7 +4,7 @@
 # In[30]:
 
 
-class Node:
+class Node:                     # complexity of this class is 1 because each of these methods will run one time when called
     def __init__(self, initdata):
         self.data = initdata
         self.next = None
@@ -22,7 +22,7 @@ class Node:
         self.next = newnext
 
 
-class UnorderedList:
+class UnorderedList:            # O(N) complexity due to consistent while loops throughout
 
     def __init__(self):
         self.head = None
@@ -44,7 +44,7 @@ class UnorderedList:
 
         return count
 
-    def search(self, item, update):
+    def search(self, item, update):                     # higher complexity search method O(n)
         current = self.head
         found = False
         while current != None and not found:
@@ -64,14 +64,14 @@ class UnorderedList:
         current = self.head
         previous = None
         found = False
-        if not self.isEmpty() or current != None:  # in order to make this a stack we would have to make it so the item is only removed if it equals the head so we would have the boolean statement check if the head equals the item removed
+        if not self.isEmpty() or current != None:
             while not found:
-                if current.getData() == item:  # to make unordered list queue
+                if current.getData() == item:
                     found = True
                 else:
                     previous = current
                     current = current.getNext()
-            if previous == None:  # What happens when the list is empty in this function?
+            if previous == None:
                 self.head = current.getNext()
             else:
                 previous.setNext(current.getNext())
@@ -87,12 +87,12 @@ class UnorderedList:
         print()
             
 
-class BinHeap:
+class BinHeap:              # O( n log n)
     def __init__(self):
         self.heapList = [0]
         self.currentSize = 0
 
-    def percUp(self, i):
+    def percUp(self, i):                                        # sort method -- O(n) complexity due to the while loop
         while i // 2 > 0:
             if self.heapList[i] < self.heapList[i // 2]:
                 tmp = self.heapList[i // 2]
@@ -105,7 +105,7 @@ class BinHeap:
         self.currentSize = self.currentSize + 1
         self.percUp(self.currentSize)
 
-    def percDown(self, i):
+    def percDown(self, i):                  # sort method -- O(n) complexity due to the wile loop
         while (i * 2) <= self.currentSize:
             mc = self.minChild(i)
             if self.heapList[i] > self.heapList[mc]:
@@ -149,7 +149,7 @@ class BinHeap:
             self.percDown(i)
             i = i - 1
 
-    def binarySearchHelper(self, item, start, end):
+    def binarySearchHelper(self, item, start, end):             # low complexity search method - O(log n) complexity
         if abs(end - start) <= 1:
             return False
         midpoint = (start + end) // 2
@@ -169,6 +169,8 @@ class BinHeap:
             self.percDown(d_p[1])
         else:
             print('Patient not currently awaiting organ')
+
+
 
 
 def addPatient(unreceived, received, dead):

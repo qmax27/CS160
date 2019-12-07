@@ -153,30 +153,25 @@ class BinHeap:
             i = i - 1
 
     def binarySearchHelper(self, item, start, end):
-        if abs(end - start) < 1:
-            return False
+        if abs(end - start) <= 1:
+            return False, 'N/a'
         midpoint = (start + end) // 2
-        element = self.heapList[midpoint]
-        print(element)
-        print(element[3])
-        if element[3] == item:
+        print(midpoint)
+        if self.heapList[midpoint] == item:
             return True, midpoint
-        if item < element[3]:
+        if item < self.heapList[midpoint]:
             return self.binarySearchHelper(item, start, midpoint)
         return self.binarySearchHelper(item, midpoint, end)
 
     def transfer(self, i, l):
-        print(self.currentSize)
         d_p = self.binarySearchHelper(i, 0, self.currentSize)
-        print(d_p)
-        try:
-            if d_p[0] == True:
-                l.add(i)
-                self.heapList[d_p[1]] = self.heapList[self.currentSize]
-                self.currentSize = self.currentSize - 1
-                self.heapList.pop(d_p[1])
-                self.percDown(d_p[1])
-        except:
+        if d_p[0] == True:
+            l.add(i)
+            self.heapList[d_p[1]] = self.heapList[self.currentSize]
+            self.currentSize = self.currentSize - 1
+            self.heapList.pop(d_p[1])
+            self.percDown(d_p[1])
+        else:
             print('Patient not currently awaiting organ')
 
 
@@ -291,10 +286,11 @@ def runProgram(unreceived, received, dead):
             command = input("What would you like to do? ")
             
         elif command == 'add':
-            patient = addPatient(unreceived, received, dead,masterList)
+            patient = addPatient(unreceived, received, dead, masterList)
             print(patient)
+            temp = int(patient[3])
+            unreceived.insert(temp)
             masterList.append(patient)
-            unreceived.insert(patient)
             command = input("What would you like to do? ")
             
         elif command == "list":
@@ -328,8 +324,11 @@ def runProgram(unreceived, received, dead):
             while moveCom != 'received' and moveCom != 'dead' and moveCom != 'cancel':
                 moveCom = input("Where do you want to move the patient? (received, dead, or cancel) ")
             priority = priorityFinder(ID, masterList)
-            if moveCom != 'cancel':    
-                unreceived.transfer(priority, moveCom)
+            if moveCom != 'cancel':
+                if moveCom == "received":
+                    unreceived.transfer(priority, received)
+                else:
+                    unreceived.transfer(priority, dead)
             command = input("What would you like to do? ")
                 
          
@@ -344,7 +343,7 @@ def runProgram(unreceived, received, dead):
     return masterList, unreceived, received, dead
             
         
-unreceived = [['Max','Quenton',1,5]]
+unreceived = []
 received = UnorderedList()
 dead = UnorderedList()
 lists = runProgram(unreceived, received, dead)
