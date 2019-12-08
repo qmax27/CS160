@@ -279,7 +279,8 @@ def runProgram(unreceived, received, dead):
         if command == 'help':
             print("'add' = add a patient to the unreceived list")
             print("'list' = list all records for a particular list")
-            print("'move' = move a patient from the unrecieved list to either the received or dead lists")
+            print("'moveTop' = move top patient from the unrecieved list to either the received or dead lists")
+            print("'move' = move any patient from the unrecieved list to either the received or dead lists")
             print("'show' = shows a specified patient's record")
             print("'help' = print all commands")
             print("'quit' = quit the program")
