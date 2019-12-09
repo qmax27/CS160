@@ -258,8 +258,14 @@ def runProgram(master, unreceived, received, dead):         #Overall complexity 
         if command == 'help':
             print("'add' = add a patient to the unreceived list")
             print("'list' = list all records for a particular list")
+<<<<<<< HEAD
             print("'move' = move a patient from the unrecieved list to either the received or dead lists")
             print("'show' = shows/updates a specified patient's record")
+=======
+            print("'moveTop' = move top patient from the unrecieved list to either the received or dead lists")
+            print("'move' = move any patient from the unrecieved list to either the received or dead lists")
+            print("'show' = shows a specified patient's record")
+>>>>>>> 347cd2b08a83330f90254361239ac62f8e64a7a0
             print("'help' = print all commands")
             print("'quit' = quit the program")
             print("'moveTop' = takes patient next in line from unreceived and moves to chosen list")
