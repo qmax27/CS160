@@ -4,7 +4,7 @@
 # In[76]:
 
 
-class Node:
+class Node:             # complexity of this class is 1 because each of these methods will run one time when called
     def __init__(self, initdata):
         self.data = initdata
         self.next = None
@@ -22,7 +22,7 @@ class Node:
         self.next = newnext
 
 
-class UnorderedList:
+class UnorderedList:        #O(N) complexity due to iterative search method
 
     def __init__(self):
         self.head = None
@@ -90,12 +90,12 @@ class UnorderedList:
             print(final_list)
         else:
             print('list is empty')
-class BinHeap:
+class BinHeap:                  #O(n^2 log n) complexity.
     def __init__(self):
         self.heapList = [0]
         self.currentSize = 0
 
-    def percUp(self, i):
+    def percUp(self, i): #O(N) complexity thanks to iterative sorting
         while i // 2 > 0:
             if self.heapList[i] < self.heapList[i // 2]:
                 tmp = self.heapList[i // 2]
@@ -108,7 +108,7 @@ class BinHeap:
         self.currentSize = self.currentSize + 1
         self.percUp(self.currentSize)
 
-    def percDown(self, i):
+    def percDown(self, i):      #O(N) complexity thanks to iterative sorting
         while (i * 2) <= self.currentSize:
             mc = self.minChild(i)
             if self.heapList[i] > self.heapList[mc]:
@@ -117,7 +117,7 @@ class BinHeap:
                 self.heapList[mc] = tmp
             i = mc
 
-    def minChild(self, i):
+    def minChild(self, i):      #O(1) as every statement will run once herein when called
         if i * 2 + 1 > self.currentSize:
             return i * 2
         else:
@@ -127,7 +127,7 @@ class BinHeap:
                 return i * 2 + 1
 
 
-    def fuldel(self):
+    def fuldel(self):   #calls the sort method 'percdown' but only runs each statement once
         retval = self.heapList[1]
         self.heapList[1] = self.heapList[self.currentSize]
         self.currentSize = self.currentSize - 1
@@ -136,7 +136,7 @@ class BinHeap:
         return retval
 
 
-    def delMin(self, i):
+    def delMin(self, i):        #O(1) complexity, every line only runs once
         retval = self.heapList[1]
         i.add(retval)
         self.heapList[1] = self.heapList[self.currentSize]
@@ -144,7 +144,7 @@ class BinHeap:
         self.heapList.pop()
         self.percDown(1)
 
-    def buildHeap(self, alist):
+    def buildHeap(self, alist): #O(N^2) complexity due to iterative loop that depends on length of list given and the calling of a O(N) sort within
         i = len(alist) // 2
         self.currentSize = len(alist)
         self.heapList = [0] + alist[:]
@@ -152,18 +152,17 @@ class BinHeap:
             self.percDown(i)
             i = i - 1
 
-    def binarySearchHelper(self, item, start, end):
+    def binarySearchHelper(self, item, start, end):     #O(log n) complexity. Function searches recursively
         if abs(end - start) <= 1:
             return False, 'N/a'
         midpoint = (start + end) // 2
-        print(midpoint)
         if self.heapList[midpoint] == item:
             return True, midpoint
         if item < self.heapList[midpoint]:
             return self.binarySearchHelper(item, start, midpoint)
         return self.binarySearchHelper(item, midpoint, end)
 
-    def transfer(self, i, l):
+    def transfer(self, i, l):           #O(1) complexity as every line runs once at most
         d_p = self.binarySearchHelper(i, 0, self.currentSize)
         if d_p[0] == True:
             l.add(i)
@@ -171,11 +170,9 @@ class BinHeap:
             self.currentSize = self.currentSize - 1
             self.heapList.pop(d_p[1])
             self.percDown(d_p[1])
-        else:
-            print('Patient not currently awaiting organ')
 
 
-def addPatient(unreceived, received, dead, masterList):
+def addPatient(unreceived, received, dead, masterList):         #O(1) compexity. Unless user continually enters invalid entries
     lastName = str(input("Please enter a last name: "))
     while lastName=='':
         lastName = str(input("Please enter a last name: "))
@@ -193,7 +190,8 @@ def addPatient(unreceived, received, dead, masterList):
     patient = [lastName, firstName, ID, priority]
     return patient
 
-def updateRecord(element):
+
+def updateRecord(element):              #O(1) compexity. Unless user continually enters invalid entries
     update = input("Do you need to update the patient's last name? (Input Y or N)")
     while update != "Y" and update != "N":
         update = input("Input 'Y' or 'N': ")
@@ -213,76 +211,58 @@ def updateRecord(element):
         update = input("Input 'Y' or 'N': ")
     if update == 'Y':
         priority = int(input("Please input a priority number between 1-10: "))
-        while priority <= 0 or priority == '':
-            priority = int(input("Please enter a priority number between 1-10: "))
+        while priority <= 0 or priority == '' or not priorityUsed(priority, masterList):
+            priority = int(input("Please enter a priority number between 1-10(may have been used already): "))
+        unreceived.insert(priority)
         element[3] = priority
     return element
-    
-def show(unreceived, received, dead):
+
+
+def show(masterList, unreceived):               #O(n) complexity due to iterative list that depends on the length of the list
             ID = int(input("Please enter a patient's ID "))
             while ID == '':
-                ID = int(input("Please enter a patient's ID "))                  
-            count = 0
+                ID = int(input("Please enter a patient's ID "))
             found = False
-            if ID < 1 or ID > unreceived.currentSize + received.size()+dead.size():
+            if ID < 1:
                 found = False
             else:
                 update = input("Do you need to update the patient's record? (Input Y or N) ")
                 while update != "Y" and update != "N":
                     update = input("Input 'Y' or 'N': ")
 
-                while found == False and ((count) < received.size()):
-                    if received.search(ID, update) == True:
+                for i in range(len(masterList)):
+                    if masterList[i][2] == ID:
                         found = True
-                    count += 1
+                        t_lis = UnorderedList()
+                        unreceived.transfer(ID, t_lis)
+                        updateRecord(masterList[i])
 
-                count = 0
-                while found == False and ((count) < dead.size()):
-                    if dead.search(ID, update) == True:
-                        found = True
-                    count += 1
-                count = 0
-                
-                binheaplist = unreceived.heapList
-                for element in binheaplist:
-                    if element == 0:
-                        pass
-                    elif element[2] == ID:
-                        found = True
-                        print(element)
-                        if update == 'Y':
-                            element = updateRecord(element)
-                count += 1
-
-                count = 0
             if found == False:
                 print("***Patient not found***")
-                
-def priorityFinder(ID, masterList):
+
+
+def priorityFinder(ID, masterList):     #O(1)
     element = masterList[ID-1]
     return element[3]
-def priorityUsed(priority, masterList):
+def priorityUsed(priority, masterList):     #O(N), iterative search
     for elements in masterList:
         if elements[3]==priority:
             return True
     return False
             
     
-def runProgram(unreceived, received, dead):
-    masterList = unreceived
+def runProgram(master, unreceived, received, dead):         #Overall complexity depends on how many commands the user calls. It can be as high as n^2 and as low as log n
     print("'help' = print all commands")
-    newHeap = BinHeap()
-    newHeap.buildHeap(unreceived)
-    unreceived = newHeap
     command = input("What would you like to do? ")
     while command != 'quit':
         if command == 'help':
             print("'add' = add a patient to the unreceived list")
             print("'list' = list all records for a particular list")
             print("'move' = move a patient from the unrecieved list to either the received or dead lists")
-            print("'show' = shows a specified patient's record")
+            print("'show' = shows/updates a specified patient's record")
             print("'help' = print all commands")
             print("'quit' = quit the program")
+            print("'moveTop' = takes patient next in line from unreceived and moves to chosen list")
             command = input("What would you like to do? ")
             
         elif command == 'add':
@@ -294,15 +274,17 @@ def runProgram(unreceived, received, dead):
             command = input("What would you like to do? ")
             
         elif command == "list":
-            listToPrint = str(input("Which list would you like to print? ('received', 'unreceived', or 'dead') "))
-            while listToPrint != 'received' and listToPrint != 'unreceived' and listToPrint != 'dead':
-                listToPrint = str(input("Which list would you like to print? ('received', 'unreceived', or 'dead') "))
+            listToPrint = str(input("Which list would you like to print? ('master', 'received', 'unreceived', or 'dead') "))
+            while listToPrint != 'received' and listToPrint != 'unreceived' and listToPrint != 'dead' and listToPrint != 'master':
+                listToPrint = str(input("Which list would you like to print? ('master', 'received', 'unreceived', or 'dead') "))
             if listToPrint == 'received':
                 received.printList()
             if listToPrint == 'unreceived':
                 print(str(unreceived.heapList))
             if listToPrint == 'dead':
                 dead.printList()
+            if listToPrint == 'master':
+                print(masterList)
     
             command = input("What would you like to do? ")
             
@@ -331,10 +313,9 @@ def runProgram(unreceived, received, dead):
                     unreceived.transfer(priority, dead)
             command = input("What would you like to do? ")
                 
-         
-            
+
         elif command == "show":
-            show(unreceived, received, dead)
+            show(masterList, unreceived)
             command = input("What would you like to do? ")          
         
         else:
@@ -343,10 +324,11 @@ def runProgram(unreceived, received, dead):
     return masterList, unreceived, received, dead
             
         
-unreceived = []
+unreceived = BinHeap()
 received = UnorderedList()
 dead = UnorderedList()
-lists = runProgram(unreceived, received, dead)
+masterList = []
+lists = runProgram(masterList, unreceived, received, dead)
 
 masterList = lists[0]
 unreceived = lists[1]
